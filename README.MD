@@ -8,3 +8,11 @@ Hasil tersebut saya dapatkan karena saya menjalankan 'cargo run server' pada sua
 ## 2.2: Modifying port
 
 Untuk merubah port dari 2000 menjadi 8080, kita hanya perlu mengedit bagian port pada URL di file server.rs (bagian TcpListener) dan client.rs (bagian ClientBuilder). Pada kedua komponen tersebut, URL sudah memakai protokol WebSocket.
+
+
+## 2.3: Small changes, add IP and port.
+![alt text](image3.png)
+
+Untuk menyisipkan alamat IP dan port pada setiap pesan yang disebarkan, Anda perlu mengubah bagian handle_connection di file server.rs dengan menambahkan data addr ke dalam pesan yang dikirim lewat channel broadcast. Perubahan ini dilakukan tepat saat menerima pesan dari client sebelum memanggil bcast_tx.send(...).
+
+Dengan cara ini, setiap pesan yang datang dari client akan mencantumkan identitas pengirimnya berupa IP dan port. Ketika pesan tersebut diteruskan ke semua client lain melalui bcast_rx.recv(), mereka dapat mengetahui asal pesan tersebut secara jelas.
